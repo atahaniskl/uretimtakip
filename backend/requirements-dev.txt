@@ -1,0 +1,9 @@
+# Geliştirme/test bağımlılıkları.
+# DİKKAT: Bu dosya Docker imajına KURULMAZ — backend/Dockerfile yalnızca
+# requirements.txt'i pip'e verir. Üretim imajı bu paketlerden etkilenmez.
+#
+# Yerel kurulum:  pip install -r requirements-dev.txt
+# Test çalıştırma: pytest
+
+pytest==9.0.1
+pytest-asyncio==1.3.0

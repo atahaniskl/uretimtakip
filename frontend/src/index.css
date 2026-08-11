@@ -1,0 +1,2632 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   DPS Global Styles
+   ============================================ */
+
+@layer base {
+  * {
+    @apply border-surface-700;
+  }
+
+  body {
+    @apply bg-surface-950 text-surface-100;
+  }
+
+  html.theme-light body,
+  body.theme-light {
+    background: #f1f5f9;
+    color: #0f172a;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-surface-900;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-surface-600 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-surface-500;
+  }
+}
+
+@layer components {
+
+  /* Glass card effect */
+  .glass-card {
+    @apply bg-surface-900/60 backdrop-blur-xl border border-surface-700/50 rounded-2xl shadow-lg;
+  }
+
+  /* Primary button */
+  .btn-primary {
+    @apply px-6 py-2.5 bg-gradient-to-r from-primary-600 to-primary-500 text-white font-medium rounded-xl shadow-glow hover:from-primary-500 hover:to-primary-400 active:scale-[0.98] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100;
+  }
+
+  /* Ghost button */
+  .btn-ghost {
+    @apply px-6 py-2.5 bg-surface-800/50 text-surface-200 font-medium rounded-xl border border-surface-700/50 hover:bg-surface-700/50 hover:text-white active:scale-[0.98] transition-all duration-200;
+  }
+
+  /* Danger button */
+  .btn-danger {
+    @apply px-6 py-2.5 bg-gradient-to-r from-red-600 to-red-500 text-white font-medium rounded-xl hover:from-red-500 hover:to-red-400 active:scale-[0.98] transition-all duration-200;
+  }
+
+  /* Success button */
+  .btn-success {
+    @apply px-6 py-2.5 bg-gradient-to-r from-emerald-600 to-emerald-500 text-white font-medium rounded-xl hover:from-emerald-500 hover:to-emerald-400 active:scale-[0.98] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+  }
+
+  /* Input field */
+  .input-field {
+    @apply w-full px-4 py-2.5 bg-surface-800/50 border border-surface-700/50 rounded-xl text-surface-100 placeholder-surface-500 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all duration-200;
+  }
+
+  /* Badge */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-success {
+    @apply badge bg-emerald-500/20 text-emerald-400 border border-emerald-500/30;
+  }
+
+  .badge-warning {
+    @apply badge bg-amber-500/20 text-amber-400 border border-amber-500/30;
+  }
+
+  .badge-danger {
+    @apply badge bg-red-500/20 text-red-400 border border-red-500/30;
+  }
+
+  .badge-info {
+    @apply badge bg-primary-500/20 text-primary-400 border border-primary-500/30;
+  }
+
+  /* Stat card */
+  .stat-card {
+    @apply glass-card p-6 flex flex-col gap-2 hover:border-primary-500/30 transition-all duration-300;
+  }
+
+  .sidebar-collapse-toggle {
+    @apply w-full mb-3 flex items-center justify-center gap-2 px-4 py-2 rounded-xl border border-surface-700/50 bg-surface-800/50 text-surface-200 text-sm font-medium hover:bg-surface-700/50 hover:text-white transition-all duration-200;
+  }
+
+  /* Yatay boşluk (px-4 → px-3, gap-3 → gap-2.5) menü 256px'ten 218px'e
+     düşürülürken kısıldı: en uzun etiket ("Kullanıcı Yönetimi") yanında bir de
+     onay rozeti çıkabildiği için eski değerlerle metin alanı taşıyordu. İkon ve
+     etiket arasındaki hizalama korunuyor. */
+  .sidebar-nav-link {
+    @apply flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200;
+  }
+
+  /* İkon asla küçülmesin, etiket ise gerekirse kırpılsın — aksi halde uzun
+     etiket + rozet birlikte ikonu sıkıştırıp satırı bozuyordu. */
+  .sidebar-nav-link > svg {
+    @apply flex-shrink-0;
+  }
+
+  .sidebar-nav-link.is-collapsed {
+    @apply justify-center px-3;
+  }
+
+  /* Genişlik 256px (w-64) idi, %15 azaltılıp 218px'e çekildi — sayfa içeriğine
+     daha fazla yer kalsın diye. En uzun etiketler ("Kullanıcı Yönetimi",
+     "Eşleme Şablonları") bu genişlikte hâlâ kırpılmadan sığıyor; daralt/genişlet
+     animasyonu ve daraltılmış (w-20, ikon-only) hâl etkilenmiyor. */
+  .app-sidebar {
+    @apply w-[218px] bg-surface-900/80 backdrop-blur-xl border-r border-surface-700/50 flex flex-col transition-all duration-300 ease-in-out;
+  }
+
+  .app-sidebar.is-collapsed {
+    @apply w-20;
+  }
+
+  .app-sidebar.is-collapsed .p-5 {
+    @apply px-3 py-5;
+  }
+
+  .app-sidebar.is-collapsed .text-xs,
+  .app-sidebar.is-collapsed .text-sm {
+    @apply truncate;
+  }
+
+  .app-sidebar.is-collapsed .sidebar-management-collapsed {
+    @apply pt-2 mt-2;
+  }
+
+  .sidebar-nav {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(148, 163, 184, 0.35) transparent;
+  }
+
+  .sidebar-nav::-webkit-scrollbar {
+    @apply w-1.5;
+  }
+
+  .sidebar-nav::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .sidebar-nav::-webkit-scrollbar-thumb {
+    @apply rounded-full;
+    background: rgba(148, 163, 184, 0.35);
+  }
+
+  .sidebar-nav::-webkit-scrollbar-thumb:hover {
+    background: rgba(148, 163, 184, 0.55);
+  }
+}
+
+/* ============================================
+   SVAR Gantt Overrides (Dark Theme)
+   ============================================ */
+
+
+/* High-contrast timeline bars for easy date-range tracking */
+
+
+/* Force labels to stay inside bars from start date side */
+
+
+/* Keep timeline headers consistently single-line per scale row */
+
+
+/* Compact monthly mode: fit ~3 months comfortably without losing readability */
+
+
+@media (max-width: 1100px) {
+
+  .gantt-filter-text-row,
+  .gantt-filter-main-row {
+    grid-template-columns: repeat(2, minmax(180px, 1fr));
+  }
+
+  .gantt-filter-save-row {
+    grid-template-columns: repeat(2, minmax(180px, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+
+  .gantt-filter-text-row,
+  .gantt-filter-main-row,
+  .gantt-filter-save-row {
+    grid-template-columns: 1fr;
+  }
+
+  .gantt-filter-action-btn {
+    width: 100%;
+  }
+}
+
+
+/* Monthly calendar view inspired by modern scheduling apps */
+.calendar-shell {
+  display: grid;
+  grid-template-columns: 260px 8px 1fr;
+  height: 100%;
+  background: #0f1117;
+  color: #e5e7eb;
+}
+
+.calendar-shell.is-collapsed {
+  grid-template-columns: 60px 8px 1fr;
+}
+
+.calendar-sidebar {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border-right: 1px solid #242734;
+  padding: 14px;
+  background: linear-gradient(180deg, #11131b 0%, #0d1017 100%);
+  contain: layout paint;
+  will-change: width;
+}
+
+.calendar-shell.is-collapsed .calendar-sidebar {
+  padding: 10px 8px;
+}
+
+/* Dar ekranlarda (telefon, küçültülmüş pencere) "Aktif Siparişler" bir grid
+   sütunu yerine ana içeriğin üzerini kaplayan kapatılabilir bir çekmece
+   (overlay) olarak gösterilir — bkz. renderActiveOrdersSidebar. */
+.calendar-sidebar-overlay-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 49;
+}
+
+.calendar-sidebar--overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: min(340px, 88vw);
+  z-index: 50;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.45);
+}
+
+.calendar-sidebar-overlay-close {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  background: #1b2130;
+  color: #e5e7eb;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.calendar-sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.calendar-sidebar-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #f3f4f6;
+}
+
+
+.calendar-shell.is-collapsed .calendar-sidebar-header {
+  justify-content: center;
+}
+
+.calendar-splitter {
+  width: 8px;
+  cursor: col-resize;
+  background: linear-gradient(180deg, #1a1f2d 0%, #151a25 100%);
+  border-left: 1px solid #242734;
+  border-right: 1px solid #242734;
+}
+
+.calendar-splitter:hover,
+.calendar-splitter.is-dragging {
+  background: linear-gradient(180deg, #233045 0%, #1b2738 100%);
+}
+
+.right-panel {
+  contain: layout paint;
+  will-change: width;
+}
+
+.right-panel.is-resizing {
+  transition: none !important;
+}
+
+.calendar-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+}
+
+/* ESKİDEN: display:grid + sabit 60px yükseklik. Izgara sarmalanamadığı için,
+   "Aktif Siparişler" paneli açılıp yer daralınca ortadaki ay başlığı sıfıra
+   kadar eziliyor, sağdaki butonların metni de iki satıra kırılıyordu.
+   ARTIK: sarmalanabilir flex + esnek yükseklik — yer yetmediğinde gruplar
+   bütün olarak alt satıra iner, hiçbir şey ezilmez/örtüşmez.
+   flex:1 1 auto (sol/sağ) + flex:0 0 auto (orta), ızgaradaki 1fr/auto/1fr
+   davranışının karşılığıdır: yer varken başlık ortada kalır. */
+.calendar-nav {
+  min-height: 60px;
+  flex-shrink: 0;
+  border-bottom: 1px solid #242734;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+  padding: 8px 16px;
+  background: #0f1117;
+}
+
+.calendar-nav-left,
+.calendar-nav-center,
+.calendar-nav-right {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  /* Butonlar bütün olarak alt satıra insin; içlerindeki metin bölünmesin. */
+  flex-wrap: wrap;
+}
+
+.calendar-nav-left {
+  flex: 1 1 auto;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.calendar-nav-center {
+  flex: 0 0 auto;
+  justify-content: center;
+  gap: 12px;
+}
+
+.calendar-nav-right {
+  flex: 1 1 auto;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* ============================================
+   Ortak takvim header'ı (bkz. components/CalendarHeader.tsx)
+   Özet / Adım / Hiyerarşik Gantt görünümlerinin HEPSİ bu düzeni kullanır;
+   yükseklik ve düğme konumları görünüm veya pencere boyutuyla DEĞİŞMEZ.
+   ============================================ */
+.calendar-header {
+  /* Sabit yükseklik: görünüm değişince header yerinden oynamasın. Eski
+     .calendar-nav esnek yükseklikliydi (wrap ediyordu), .yearly-header ise
+     64px'ti — bu yüzden Özet↔Adım↔Gantt geçişlerinde gövde zıplıyordu. */
+  height: 60px;
+  flex: 0 0 60px;
+  box-sizing: border-box;
+  display: flex;
+  /* Kritik: satır kırılmaz. Yer yetmediğinde header kendi içinde yatay kayar,
+     düğmeler alt satıra inip yer değiştirmez. */
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  border-bottom: 1px solid #242734;
+  background: #0f1117;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+}
+
+/* Taşma çubuğu ince ve sessiz olsun — 60px'lik header'dan yer yemesin. */
+.calendar-header::-webkit-scrollbar {
+  height: 6px;
+}
+
+.calendar-header::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.calendar-header::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.35);
+  border-radius: 3px;
+}
+
+.calendar-header-left,
+.calendar-header-right {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  flex: 0 0 auto;
+  gap: 10px;
+}
+
+/* Yalnızca ortadaki başlık daralır; kenardaki düğme kümeleri hiç ezilmez. */
+.calendar-header-center {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.calendar-header-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+  color: #f9fafb;
+  text-transform: capitalize;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Görünüme göre gelip giden denetimler için yer tutucu YOK: bunlar kümenin iç
+   ucunda (sol kümede en sağda, sağ kümede en solda) durur, yani ortadaki esnek
+   başlığa bakan tarafta. Kaybolduklarında boşluğu başlık yutar; kalan
+   düğmelerin hiçbiri oynamaz ve kümenin ortasında delik açılmaz.
+   (bkz. CalendarHeader.tsx ve DeliveryCalendarPage viewControls) */
+
+/* Etiketi duruma göre uzayıp kısalan düğmeler sabit genişlikte kalsın —
+   yoksa "Aktif Siparişler" ↔ "Aktif Siparişleri Göster" geçişinde yanındaki
+   Bugün/ok düğmeleri kayıyor. */
+/* Etiketi sabit ("Aktif Siparişler") olduğu için genişliği artık değişmiyor;
+   eskiden metin uzayıp kısaldığı için gereken min-width kaldırıldı. */
+.calendar-header-sidebar-toggle {
+  text-align: center;
+}
+
+
+/* Görünüm anahtarları (Özet/Detay, Aylık/Yıllık, Dikey/Yatay) ve filtre
+   düğmesi — bkz. DeliveryCalendarPage viewControls. */
+.calendar-header-filter-toggle {
+  min-width: 118px;
+  text-align: center;
+}
+
+.calendar-header-create {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+/* Header'ın ALTINDA duran gövde: eski düzende header .calendar-main'in
+   içindeydi (yani yan panelin sağında ve içerikle birlikte kayıyordu).
+   Artık header tam genişlikte üstte; kabuk kalan yüksekliği doldurur. */
+.calendar-shell.is-below-header {
+  height: auto;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+
+/* ── "Özel Program" farkları paneli (sipariş düzenleme ekranı) ──
+   Renkler Tailwind amber-300/200 yardımcı sınıflarıyla veriliyordu; index.css'teki
+   genel açık tema kuralları yalnızca `text-amber-400`ü kapsadığı için bu tonlar
+   açık temada beyaz zeminde neredeyse okunmuyordu. Kendi sınıflarıyla iki temada
+   da açıkça tanımlanıyor (bkz. .gantt-component-label-text'te aynı yaklaşım). */
+.custom-schedule-diff {
+  border-color: rgba(245, 158, 11, 0.25);
+  background: rgba(245, 158, 11, 0.05);
+}
+
+.custom-schedule-diff-toggle {
+  color: #fcd34d;
+}
+
+.custom-schedule-diff-toggle:hover {
+  color: #fde68a;
+}
+
+.custom-schedule-diff-item {
+  color: rgba(253, 230, 138, 0.9);
+}
+
+.custom-schedule-diff-item::marker {
+  color: rgba(245, 158, 11, 0.6);
+}
+
+.theme-light .custom-schedule-diff {
+  border-color: rgba(180, 83, 9, 0.35);
+  background: rgba(251, 191, 36, 0.13);
+}
+
+.theme-light .custom-schedule-diff-toggle {
+  color: #92400e;
+}
+
+.theme-light .custom-schedule-diff-toggle:hover {
+  color: #78350f;
+}
+
+.theme-light .custom-schedule-diff-item {
+  color: #92400e;
+}
+
+.theme-light .custom-schedule-diff-item::marker {
+  color: rgba(180, 83, 9, 0.75);
+}
+
+/* Zaman çizelgesi başlığındaki "Özel program (kaydedilmedi)" rozeti — yukarıdaki
+   panelle aynı amber sorunu (text-amber-300 açık temada okunmuyordu). */
+.timeline-pending-badge {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fcd34d;
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.theme-light .timeline-pending-badge {
+  background: rgba(251, 191, 36, 0.18);
+  color: #92400e;
+  border-color: rgba(180, 83, 9, 0.4);
+}
+
+/* ── DateField: elle yazılamayan, ay adı yazıyla gösterilen tarih seçici ── */
+.date-picker-panel {
+  position: fixed;
+  z-index: 80;
+  width: 284px;
+  padding: 10px;
+  border-radius: 14px;
+  border: 1px solid rgba(51, 65, 85, 0.9);
+  background: #0f172a;
+  box-shadow: 0 18px 44px rgba(2, 6, 23, 0.6);
+}
+
+.date-picker-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  color: #94a3b8;
+  transition: background 0.15s, color 0.15s;
+}
+
+.date-picker-nav:hover {
+  background: rgba(30, 41, 59, 0.9);
+  color: #f1f5f9;
+}
+
+.date-picker-day {
+  height: 32px;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #cbd5e1;
+  transition: background 0.12s, color 0.12s;
+}
+
+.date-picker-day:hover:not(.is-disabled) {
+  background: rgba(99, 102, 241, 0.18);
+  color: #fff;
+}
+
+.date-picker-day.is-outside {
+  color: #475569;
+}
+
+.date-picker-day.is-today {
+  box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.55);
+}
+
+.date-picker-day.is-selected {
+  background: #6366f1;
+  color: #fff;
+  font-weight: 600;
+}
+
+.date-picker-day.is-disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.theme-light .date-picker-panel {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  box-shadow: 0 18px 44px rgba(15, 23, 42, 0.18);
+}
+
+.theme-light .date-picker-nav {
+  color: #64748b;
+}
+
+.theme-light .date-picker-nav:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.theme-light .date-picker-day {
+  color: #1e293b;
+}
+
+.theme-light .date-picker-day.is-outside {
+  color: #94a3b8;
+}
+
+.theme-light .date-picker-day.is-selected {
+  color: #fff;
+}
+
+/* ── Özet takvim: tek teslimatın alt adımlarını izole etme ──
+   Bar üzerinde sağ tık menüsü + izole moddayken takvimin üstünde duran bant.
+   Menü `position: fixed` çizilir; takvim gövdesi kaydırılabilir olduğu için
+   absolute konumlandırma onu kırpardı ("Detay" menüsüyle aynı gerekçe). */
+.calendar-bar-menu {
+  position: fixed;
+  z-index: 60;
+  min-width: 190px;
+  padding: 4px;
+  border-radius: 12px;
+  border: 1px solid rgba(51, 65, 85, 0.9);
+  background: #0f172a;
+  box-shadow: 0 12px 32px rgba(2, 6, 23, 0.55);
+}
+
+.calendar-bar-menu-title {
+  padding: 6px 10px 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #94a3b8;
+  border-bottom: 1px solid rgba(51, 65, 85, 0.7);
+  margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 240px;
+}
+
+.calendar-bar-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #e2e8f0;
+  text-align: left;
+  transition: background 0.15s, color 0.15s;
+}
+
+.calendar-bar-menu-item:hover {
+  background: rgba(99, 102, 241, 0.18);
+  color: #fff;
+}
+
+.calendar-focus-banner {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 8px 14px;
+  border-bottom: 1px solid rgba(51, 65, 85, 0.6);
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.calendar-focus-banner-badge {
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(59, 130, 246, 0.45);
+  background: rgba(59, 130, 246, 0.18);
+  color: #93c5fd;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.calendar-focus-banner-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #f1f5f9;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 320px;
+}
+
+.calendar-focus-banner-meta {
+  font-size: 12px;
+  color: #94a3b8;
+  white-space: nowrap;
+}
+
+/* Çıkış düğmesi bilinçli olarak bandın SAĞ ucunda ve her zaman görünür —
+   kullanıcı izole moddan tek tıkla (ya da Esc ile) çıkabilmeli. */
+.calendar-focus-banner-exit {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(51, 65, 85, 0.9);
+  background: rgba(15, 23, 42, 0.6);
+  color: #cbd5e1;
+  font-size: 12px;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+
+.calendar-focus-banner-exit:hover {
+  background: rgba(30, 41, 59, 0.9);
+  color: #fff;
+}
+
+.calendar-focus-banner-kbd {
+  padding: 1px 5px;
+  border-radius: 4px;
+  border: 1px solid rgba(100, 116, 139, 0.6);
+  background: rgba(2, 6, 23, 0.5);
+  font-size: 10px;
+  font-family: inherit;
+  color: #94a3b8;
+}
+
+.theme-light .calendar-bar-menu {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.16);
+}
+
+.theme-light .calendar-bar-menu-title {
+  color: #64748b;
+  border-bottom-color: #e2e8f0;
+}
+
+.theme-light .calendar-bar-menu-item {
+  color: #1e293b;
+}
+
+.theme-light .calendar-bar-menu-item:hover {
+  background: rgba(99, 102, 241, 0.12);
+  color: #0f172a;
+}
+
+.theme-light .calendar-focus-banner {
+  background: rgba(59, 130, 246, 0.09);
+  border-bottom-color: #cbd5e1;
+}
+
+.theme-light .calendar-focus-banner-badge {
+  background: rgba(59, 130, 246, 0.14);
+  border-color: rgba(37, 99, 235, 0.35);
+  color: #1d4ed8;
+}
+
+.theme-light .calendar-focus-banner-title {
+  color: #0f172a;
+}
+
+.theme-light .calendar-focus-banner-meta {
+  color: #64748b;
+}
+
+.theme-light .calendar-focus-banner-exit {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  color: #334155;
+}
+
+.theme-light .calendar-focus-banner-exit:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.theme-light .calendar-focus-banner-kbd {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #64748b;
+}
+
+/* Nav butonlarının metni asla iki satıra kırılmasın (bkz. yukarıdaki not). */
+.calendar-nav-toggle,
+.calendar-nav-arrows button,
+.calendar-nav .calendar-checkbox-toggle,
+.calendar-header .calendar-checkbox-toggle {
+  white-space: nowrap;
+}
+
+.calendar-nav h3 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 500;
+  color: #f9fafb;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+
+.calendar-nav-arrows button {
+  border: 1px solid #3a3f53;
+  background: #191d2a;
+  color: #e5e7eb;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.calendar-nav-arrows {
+  display: flex;
+  gap: 6px;
+}
+
+.calendar-nav-toggle {
+  border: 1px solid #3a3f53;
+  background: #191d2a;
+  color: #e5e7eb;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* Takvim header'ındaki "segment" anahtarları — Dikey/Yatay, Özet/Detay,
+   Aylık/Yıllık. Üçü de aynı kalıptır: bir kapsayıcı ve içinde biri aktif olan
+   düğmeler.
+
+   Renkler Tailwind yardımcı sınıflarıyla (bg-surface-900/60, text-surface-300…)
+   yazılıydı; bunlar SABİT koyu tonlar olduğu için açık temada header beyaza
+   dönerken düğme kümesi koyu kalıyor, pasif düğme yazısı da (açık gri) beyaz
+   zeminde neredeyse okunmuyordu. Aynı kalıp altı kez tekrarlandığından tema
+   uyumu tek tek düzeltilemezdi — kalıp buraya, komşusu .calendar-nav-toggle
+   ile aynı dile taşındı. */
+.calendar-segmented {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #3a3f53;
+  background: rgba(15, 23, 42, 0.6);
+  border-radius: 8px;
+  padding: 4px;
+}
+
+.calendar-segmented-btn {
+  padding: 4px 10px;
+  font-size: 12px;
+  line-height: 1.25;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #cbd5e1;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+.calendar-segmented-btn:hover:not(.is-active) {
+  background: rgba(51, 65, 85, 0.7);
+}
+
+.calendar-segmented-btn.is-active {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.theme-light .calendar-segmented {
+  border-color: rgba(148, 163, 184, 0.7);
+  background: #ffffff;
+}
+
+.theme-light .calendar-segmented-btn {
+  color: #475569;
+}
+
+.theme-light .calendar-segmented-btn:hover:not(.is-active) {
+  background: #f1f5f9;
+}
+
+/* Aktif düğme açık temada da dolu/primary kalır — .calendar-checkbox-toggle
+   ile aynı gradyan, "aktif" dili tüm header boyunca tek. */
+.theme-light .calendar-segmented-btn.is-active {
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: #ffffff;
+}
+
+/* Filtre panelindeki dikey ayırıcı çizgiler. Eskiden bg-surface-700/60 ile
+   çiziliyordu; açık temada genel ".theme-light [class*='bg-surface-700']"
+   kuralı bunu panel zemininin (bg-surface-900 → #e2e8f0) TAM AYNI tonuna
+   çevirdiği için çizgiler görünmez oluyordu. Kendi rengini taşıyor. */
+.calendar-filter-divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(51, 65, 85, 0.6);
+}
+
+.theme-light .calendar-filter-divider {
+  background: rgba(100, 116, 139, 0.45);
+}
+
+/* Görünüşte bir buton (.calendar-nav-toggle ile aynı dil), ama gerçek bir
+   <input type="checkbox"> içerir — işaretliyken dolu/primary renge döner
+   (Özet/Detay sekmeleriyle aynı "aktif" dili), tıklanabilirlik ve klavye/erişilebilirlik
+   gerçek checkbox'tan gelir. */
+.calendar-checkbox-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #3a3f53;
+  background: #191d2a;
+  color: #e5e7eb;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.calendar-checkbox-toggle:hover {
+  background: #20263a;
+}
+
+/* Görünen küçük onay kutusu — durumun TEK göstergesi (etiket "Alt Ürünler"
+   durumu anlatmıyor, düğmenin dolu/primary bir hâli de yok).
+
+   İşaretli görünümü, JS ile eklenen bir sınıf yerine GERÇEK input'un :checked
+   durumundan türetilir (input, kutunun hemen öncesindeki kardeş elemandır).
+   Böylece görsel ile asıl form durumu ayrışamaz — klavyeyle (Space) değiştirmek
+   de doğru görünümü verir. */
+.calendar-checkbox-toggle-box {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  border: 1px solid #6b7280;
+  background: rgba(15, 17, 23, 0.5);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+/* İşaretliyken kutu primary renge döner (beyaz dolgu DEĞİL): düğmenin zemini
+   artık koyu/beyaz olduğundan beyaz bir kutu açık temada zeminde kaybolurdu. */
+.calendar-checkbox-toggle-input:checked ~ .calendar-checkbox-toggle-box {
+  background: #2563eb;
+  border-color: #2563eb;
+}
+
+.calendar-checkbox-toggle-check {
+  width: 10px;
+  height: 10px;
+  color: #ffffff;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.calendar-checkbox-toggle-input:checked ~ .calendar-checkbox-toggle-box .calendar-checkbox-toggle-check {
+  opacity: 1;
+}
+
+/* Gerçek input görsel olarak gizli olduğu için klavye odağı hiç görünmüyordu —
+   odak halkası kutunun üzerinde gösterilir. */
+.calendar-checkbox-toggle-input:focus-visible ~ .calendar-checkbox-toggle-box {
+  outline: 2px solid #60a5fa;
+  outline-offset: 2px;
+}
+
+.calendar-checkbox-toggle-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-template-rows: 36px repeat(6, auto);
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.calendar-active-list {
+  max-height: 100%;
+  overflow: auto;
+  padding: 0 10px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.calendar-active-list--sidebar {
+  flex: 1 1 auto;
+  min-height: 0;
+  margin-top: 4px;
+  border-top: 1px solid #242734;
+  padding-top: 10px;
+  overflow: hidden;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Top scrollbar styling */
+.active-orders-top-scrollbar::-webkit-scrollbar {
+  height: 8px;
+}
+
+.active-orders-top-scrollbar::-webkit-scrollbar-track {
+  background: #131722;
+  border-radius: 4px;
+}
+
+.active-orders-top-scrollbar::-webkit-scrollbar-thumb {
+  background: #2f3648;
+  border-radius: 4px;
+}
+
+.active-orders-top-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #44506a;
+}
+
+
+/* Count badge next to sidebar title */
+.calendar-active-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #2563eb22;
+  border: 1px solid #2563eb55;
+  color: #93c5fd;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 1px 7px;
+  min-width: 22px;
+}
+
+/* Active orders table */
+.active-orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+  color: #e2e8f0;
+}
+
+.active-orders-table thead tr {
+  background: #131722;
+  border-bottom: 1px solid #2a3045;
+}
+
+.active-orders-table th {
+  text-align: left;
+  padding: 5px 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #94a3b8;
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  background: #131722;
+  z-index: 1;
+}
+
+.active-orders-row {
+  cursor: pointer;
+  border-bottom: 1px solid #1e2536;
+  transition: background 0.13s ease;
+}
+
+.active-orders-row:hover {
+  background: #1b2335;
+}
+
+.active-orders-row--grouphead {
+  cursor: default;
+}
+
+.active-orders-row--grouphead:hover {
+  background: transparent;
+}
+
+.active-orders-td {
+  padding: 5px 6px;
+  vertical-align: middle;
+  line-height: 1.3;
+}
+
+.active-orders-td--orderno {
+  font-weight: 700;
+  color: #93c5fd;
+  white-space: nowrap;
+}
+
+.active-orders-td--product {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #f3f4f6;
+}
+
+.active-orders-td--customer {
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #cbd5e1;
+}
+
+.active-orders-td--qty {
+  white-space: nowrap;
+  color: #a3e635;
+  text-align: right;
+}
+
+.active-orders-td--date {
+  white-space: nowrap;
+  color: #94a3b8;
+  font-size: 10px;
+}
+
+.active-orders-row--child {
+  cursor: pointer;
+  border-bottom: 1px solid #1e2536;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+  background: rgba(99, 102, 241, 0.04);
+}
+
+.active-orders-row--child:hover {
+  background: rgba(99, 102, 241, 0.08);
+  border-left: 3px solid #6366f1;
+}
+
+.active-orders-row--child .active-orders-td--orderno {
+  font-weight: 600;
+  color: #a5b4fc;
+  padding-left: 42px;
+  font-size: 11px;
+  position: relative;
+}
+
+.active-orders-row--child .active-orders-td--orderno::before {
+  content: '';
+  position: absolute;
+  left: 20px;
+  top: 0;
+  width: 14px;
+  height: 50%;
+  border-left: 2px solid rgba(99, 102, 241, 0.4);
+  border-bottom: 2px solid rgba(99, 102, 241, 0.4);
+  border-bottom-left-radius: 4px;
+  background: transparent;
+}
+
+.active-orders-row--child .active-orders-td--orderno::after {
+  content: 'PARÇA';
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 5px;
+  font-size: 9px;
+  font-weight: 700;
+  border-radius: 4px;
+  background-color: rgba(99, 102, 241, 0.15);
+  color: #a5b4fc;
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  vertical-align: middle;
+}
+
+/* Aynı sipariş no'ya sahip farklı ürünler (tek sepet) için dallanma gösterimi */
+.active-orders-row--groupchild {
+  cursor: pointer;
+  border-bottom: 1px solid #1e2536;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+  background: rgba(56, 189, 248, 0.04);
+}
+
+.active-orders-row--groupchild:hover {
+  background: rgba(56, 189, 248, 0.08);
+  border-left: 3px solid #38bdf8;
+}
+
+.active-orders-row--groupchild .active-orders-td--orderno {
+  font-weight: 600;
+  color: #7dd3fc;
+  padding-left: 42px;
+  font-size: 11px;
+  position: relative;
+}
+
+.active-orders-row--groupchild .active-orders-td--orderno::before {
+  content: '';
+  position: absolute;
+  left: 20px;
+  top: 0;
+  width: 14px;
+  height: 50%;
+  border-left: 2px solid rgba(56, 189, 248, 0.4);
+  border-bottom: 2px solid rgba(56, 189, 248, 0.4);
+  border-bottom-left-radius: 4px;
+  background: transparent;
+}
+
+.active-orders-row--groupchild .active-orders-td--orderno::after {
+  content: attr(data-product);
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 5px;
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 9px;
+  font-weight: 700;
+  border-radius: 4px;
+  background-color: rgba(56, 189, 248, 0.15);
+  color: #7dd3fc;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  vertical-align: middle;
+}
+
+.active-orders-groupcount-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  font-size: 9px;
+  font-weight: 700;
+  border-radius: 4px;
+  background-color: rgba(56, 189, 248, 0.15);
+  color: #7dd3fc;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  vertical-align: middle;
+}
+
+.calendar-active-empty {
+  font-size: 12px;
+  color: #9ca3af;
+  padding: 8px 6px;
+}
+
+.calendar-weekday {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid #242734;
+  border-bottom: 1px solid #242734;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: #9ca3af;
+}
+
+.calendar-weekday:last-child {
+  border-right: none;
+}
+
+.calendar-day {
+  border-right: 1px solid #242734;
+  border-bottom: 1px solid #242734;
+  padding: 6px;
+  min-height: 0;
+  overflow: visible;
+  background: #0f1117;
+}
+
+.calendar-day.is-out {
+  background: #0b0d14;
+}
+
+.calendar-day.is-offday {
+  background: repeating-linear-gradient(-45deg,
+      #121521,
+      #121521 8px,
+      #0e111a 8px,
+      #0e111a 16px);
+}
+
+.calendar-day.is-offday .calendar-day-number {
+  color: #a1a1aa;
+}
+
+.calendar-day.is-today {
+  box-shadow: inset 0 0 0 2px #ef4444;
+}
+
+.calendar-day:nth-child(7n) {
+  border-right: none;
+}
+
+.calendar-day-number {
+  font-size: 12px;
+  color: #d1d5db;
+  margin-bottom: 6px;
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 9999px;
+}
+
+.calendar-day-number.is-today {
+  background: #2563eb;
+  color: #fff;
+}
+
+.calendar-day-events {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: visible;
+}
+
+
+.calendar-event-placeholder {
+  min-height: 18px;
+  margin-left: -6px;
+  margin-right: -6px;
+  margin-bottom: 2px;
+}
+
+
+.calendar-outsourced-toggle {
+  display: inline-grid;
+  align-items: center;
+  grid-template-columns: auto auto;
+  gap: 14px;
+  min-height: 54px;
+  padding: 10px 16px;
+  border: 1px solid #3a4358;
+  background: #0f1320;
+  border-radius: 8px;
+}
+
+.calendar-outsourced-toggle input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: #22c55e;
+}
+
+.calendar-outsourced-toggle span {
+  display: grid;
+  gap: 2px;
+}
+
+.calendar-outsourced-toggle strong {
+  color: #e2e8f0;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.calendar-outsourced-toggle small {
+  color: #94a3b8;
+  font-size: 11px;
+}
+
+.detail-error {
+  border: 1px solid rgba(248, 113, 113, 0.45);
+  background: rgba(127, 29, 29, 0.28);
+  color: #fecaca;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 12px;
+}
+
+
+.delivery-calendar-shell {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, #0f1117 0%, #0b0d14 100%);
+  min-height: 0;
+  overflow: auto;
+}
+
+
+.delivery-calendar-nav {
+  background: #0f1117;
+}
+
+.delivery-calendar-grid {
+  grid-template-rows: 36px repeat(6, auto);
+}
+
+.delivery-calendar-day {
+  overflow: visible;
+}
+
+.delivery-calendar-day-events {
+  gap: 4px;
+}
+
+.delivery-calendar-chip,
+.delivery-calendar-yearly-chip {
+  display: block;
+  width: 100%;
+  height: 16px;
+  text-align: center;
+  border: none;
+  border-radius: 8px;
+  padding: 2px 6px;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  margin-bottom: 2px;
+  box-sizing: border-box;
+}
+
+.delivery-calendar-chip:hover,
+.delivery-calendar-yearly-chip:hover {
+  filter: brightness(1.25) !important;
+  transform: scaleY(1.12);
+  z-index: 100 !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+}
+
+
+.delivery-calendar-chip:focus-visible,
+.delivery-calendar-yearly-chip:focus-visible {
+  outline: 2px solid #93c5fd;
+  outline-offset: 1px;
+}
+
+/* Bir bar'a (ana sipariş ya da alt ürün) hover olunca, aynı siparişe ait TÜM
+   barları (tıklamadan, anında) belirginleştirmek için — bkz. rootOrderId /
+   hoveredRootOrderId (DeliveryCalendarPage.tsx). Ana sipariş mavi/camgöbeği,
+   alt ürün kehribar renginde vurgulanır — kullanıcı bir bakışta hangisinin
+   ana sipariş hangisinin alt ürün olduğunu ayırt edebilsin diye.
+   (Kehribar rengi, uygulamanın başka yerlerindeki "Alt Ürün" temasıyla
+   tutarlı — bkz. OrderDetailsPage/OrderDetailModal amber-500 kullanımı.) */
+.is-group-highlighted-main {
+  outline: 2px solid #38bdf8;
+  outline-offset: 1px;
+  filter: brightness(1.2);
+  box-shadow: 0 0 10px 2px rgba(56, 189, 248, 0.7);
+  /* DİKKAT: bu değer modal z-index'inin (OrderDetailModal.tsx: z-50) ALTINDA
+     kalmalı. Eskiden 60'tı — Hiyerarşik Gantt'ta bar konteynerinin kendi
+     stacking context'i olmadığı için bu, "Düzenle" ile açılan modalin ROOT
+     seviyesinde z-50'yi geçip modalin ÖNÜNE çıkmasına yol açıyordu (StageView/
+     DeliveryCalendarPage'de fark edilmemişti çünkü oradaki bar konteynerleri
+     kendi stacking context'lerine sahip, kaçış olmuyordu). Komşu bar'lardan
+     (bkz. HierarchicalGantt.tsx zIndex:1-2) öne çıkmak için 5 fazlasıyla yeter. */
+  z-index: 5;
+  animation: group-highlight-pulse-main 1.1s ease-in-out infinite;
+}
+
+.is-group-highlighted-component {
+  outline: 2px solid #f59e0b;
+  outline-offset: 1px;
+  filter: brightness(1.2);
+  box-shadow: 0 0 10px 2px rgba(245, 158, 11, 0.75);
+  /* bkz. .is-group-highlighted-main'deki aynı gerekçe (yukarıda) — modalin
+     z-50'sinin altında kalmalı. */
+  z-index: 5;
+  animation: group-highlight-pulse-component 1.1s ease-in-out infinite;
+}
+
+@keyframes group-highlight-pulse-main {
+  0%, 100% { box-shadow: 0 0 6px 1px rgba(56, 189, 248, 0.55); }
+  50% { box-shadow: 0 0 12px 4px rgba(56, 189, 248, 0.9); }
+}
+
+@keyframes group-highlight-pulse-component {
+  0%, 100% { box-shadow: 0 0 6px 1px rgba(245, 158, 11, 0.55); }
+  50% { box-shadow: 0 0 12px 4px rgba(245, 158, 11, 0.9); }
+}
+
+
+.delivery-calendar-yearly-header {
+  background: #0f1117;
+}
+
+.delivery-calendar-yearly-grid {
+  grid-template-columns: 66px minmax(940px, 1fr) 120px;
+}
+
+
+.delivery-calendar-yearly-events {
+  margin-top: 6px;
+}
+
+/* ============================================
+   Light Theme Overrides
+   ============================================ */
+
+.theme-light .app-sidebar {
+  background: rgba(248, 250, 252, 0.92);
+  border-right-color: rgba(148, 163, 184, 0.45);
+}
+
+.theme-light .sidebar-nav {
+  scrollbar-color: rgba(100, 116, 139, 0.4) transparent;
+}
+
+.theme-light .sidebar-nav::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.4);
+}
+
+.theme-light .sidebar-nav::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.6);
+}
+
+.theme-light .sidebar-collapse-toggle {
+  border-color: rgba(148, 163, 184, 0.6);
+  background: rgba(255, 255, 255, 0.9);
+  color: #334155;
+}
+
+.theme-light .sidebar-collapse-toggle:hover {
+  background: rgba(241, 245, 249, 0.95);
+  color: #0f172a;
+}
+
+.theme-light .input-field {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(148, 163, 184, 0.5);
+  color: #0f172a;
+}
+
+.theme-light .input-field::placeholder {
+  color: #64748b;
+}
+
+.theme-light .btn-ghost {
+  background: rgba(241, 245, 249, 0.95);
+  border-color: rgba(148, 163, 184, 0.6);
+  color: #334155;
+}
+
+.theme-light .btn-ghost:hover {
+  background: rgba(226, 232, 240, 0.95);
+  color: #0f172a;
+}
+
+.theme-light .glass-card {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(148, 163, 184, 0.45);
+}
+
+.theme-light .badge-info {
+  background: rgba(99, 102, 241, 0.12);
+  color: #4338ca;
+  border-color: rgba(99, 102, 241, 0.3);
+}
+
+.theme-light .badge-success {
+  background: rgba(16, 185, 129, 0.12);
+  color: #047857;
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.theme-light .badge-warning {
+  background: rgba(245, 158, 11, 0.12);
+  color: #b45309;
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.theme-light .badge-danger {
+  background: rgba(239, 68, 68, 0.12);
+  color: #b91c1c;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.theme-light [class*='bg-surface-950'] {
+  background-color: #f1f5f9 !important;
+}
+
+.theme-light [class*='bg-surface-900'] {
+  background-color: #e2e8f0 !important;
+}
+
+.theme-light [class*='bg-surface-800'] {
+  background-color: #f8fafc !important;
+}
+
+.theme-light [class*='bg-surface-700'] {
+  background-color: #e2e8f0 !important;
+}
+
+.theme-light [class*='text-surface-100'],
+.theme-light [class*='text-surface-200'],
+.theme-light [class*='text-white'] {
+  color: #000000 !important;
+}
+
+.theme-light [class*='text-surface-300'],
+.theme-light [class*='text-surface-400'] {
+  color: #000000 !important;
+}
+
+.theme-light [class*='text-surface-500'] {
+  color: #000000 !important;
+}
+.theme-light [class*='text-surface-600'] {
+  color: #000000 !important;
+}
+
+.theme-light [class*='text-primary-200'] {
+  color: #4338ca !important;
+}
+.theme-light [class*='text-primary-300'] {
+  color: #000000 !important;
+}
+.theme-light [class*='text-primary-400'] {
+  color: #000000 !important;
+}
+
+.theme-light [class*='border-surface-800'],
+.theme-light [class*='border-surface-700'],
+.theme-light [class*='border-surface-600'] {
+  border-color: rgba(148, 163, 184, 0.55) !important;
+}
+
+.theme-light [class*='text-red-400'] {
+  color: #b91c1c !important;
+}
+.theme-light [class*='text-amber-400'] {
+  color: #b45309 !important;
+}
+.theme-light [class*='text-emerald-400'] {
+  color: #047857 !important;
+}
+
+
+/* Right panel: dedicated hover/state classes.
+   The generic [class*='bg-surface-*'] light-theme overrides above match
+   substrings, so they also catch hover: variants and apply them permanently
+   (not just on :hover) and collide with the base state's own override.
+   These scoped classes use real :hover rules instead, per theme. */
+.rp-hover-row {
+  background-color: rgba(15, 23, 42, 0.4);
+  border-color: transparent;
+}
+.rp-hover-row:hover {
+  border-color: rgba(51, 65, 85, 0.6);
+  background-color: rgba(30, 41, 59, 0.6);
+}
+.theme-light .rp-hover-row {
+  background-color: rgba(226, 232, 240, 0.5);
+}
+.theme-light .rp-hover-row:hover {
+  border-color: rgba(148, 163, 184, 0.55);
+  background-color: rgba(203, 213, 225, 0.65);
+}
+
+.rp-step-row {
+  background-color: rgba(15, 23, 42, 0.65);
+}
+.rp-step-row:hover {
+  background-color: rgba(30, 41, 59, 0.8);
+}
+.theme-light .rp-step-row {
+  background-color: rgba(226, 232, 240, 0.55);
+}
+.theme-light .rp-step-row:hover {
+  background-color: rgba(203, 213, 225, 0.75);
+}
+
+.rp-close-btn {
+  color: #94a3b8;
+}
+.rp-close-btn:hover {
+  background-color: #334155;
+  color: #fff;
+}
+.theme-light .rp-close-btn {
+  color: #64748b;
+}
+.theme-light .rp-close-btn:hover {
+  background-color: #e2e8f0;
+  color: #0f172a;
+}
+
+/* Keeps white text readable on solid colored badges (e.g. bg-primary-500,
+   bg-emerald-500) in light theme — the generic [class*='text-white'] rule
+   above forces black regardless of background, which kills contrast here. */
+.rp-badge-white-text {
+  color: #ffffff !important;
+}
+
+/* Right panel: accent text colors (cyan/violet/amber/emerald/red 200-300
+   shades) tuned only for a dark background. The global light-theme rules
+   above don't cover these shades, so they stayed illegibly pale on the
+   light "İş akışı" / "Sipariş Bilgisi" / durum kartları. Strong = headings,
+   labels, badges; soft = supporting body copy under them. */
+.rp-text-cyan { color: #67e8f9; }
+.theme-light .rp-text-cyan { color: #0e7490; }
+.rp-text-cyan-soft { color: rgba(103, 232, 249, 0.75); }
+.theme-light .rp-text-cyan-soft { color: rgba(14, 116, 144, 0.85); }
+
+.rp-text-violet { color: #c4b5fd; }
+.theme-light .rp-text-violet { color: #6d28d9; }
+.rp-text-violet-soft { color: rgba(196, 181, 253, 0.8); }
+.theme-light .rp-text-violet-soft { color: rgba(109, 40, 217, 0.85); }
+
+.rp-text-amber { color: #fcd34d; }
+.theme-light .rp-text-amber { color: #b45309; }
+.rp-text-amber-soft { color: rgba(252, 211, 77, 0.8); }
+.theme-light .rp-text-amber-soft { color: rgba(180, 83, 9, 0.85); }
+
+.rp-text-emerald { color: #6ee7b7; }
+.theme-light .rp-text-emerald { color: #047857; }
+.rp-text-emerald-soft { color: rgba(110, 231, 183, 0.85); }
+.theme-light .rp-text-emerald-soft { color: rgba(4, 120, 87, 0.85); }
+
+.rp-text-red-soft { color: rgba(252, 165, 165, 0.9); }
+.theme-light .rp-text-red-soft { color: rgba(185, 28, 28, 0.85); }
+
+.rp-ring-offset { --tw-ring-offset-color: #0f172a; }
+.theme-light .rp-ring-offset { --tw-ring-offset-color: #e2e8f0; }
+
+.theme-light .calendar-nav-arrows button,
+.theme-light .calendar-nav-toggle,
+.theme-light .calendar-checkbox-toggle {
+  border-color: rgba(148, 163, 184, 0.7);
+  background: #ffffff;
+  color: #1e293b;
+}
+
+.theme-light .calendar-nav-arrows button:hover,
+.theme-light .calendar-nav-toggle:hover,
+.theme-light .calendar-checkbox-toggle:hover {
+  background: #f1f5f9;
+}
+
+/* "Aktif Siparişler" düğmesi — panel AÇIKKEN dolu/primary görünür. Durum artık
+   metinle ("...Göster") değil RENKLE aktarıldığı için bu kural işlevsel: aynı
+   "aktif" dili header'ın her yerinde ortak (bkz. .calendar-segmented-btn.is-active).
+
+   Kurallar BİLİNÇLİ olarak yukarıdaki .theme-light hover/temel bloklarından
+   SONRA duruyor: ".theme-light .calendar-nav-toggle:hover" ile özgüllüğü aynı
+   (0,3,0), yani önce yazılsaydı aktif düğmenin üzerine gelindiğinde renk açık
+   griye düşer ve "aktif" bilgisi kaybolurdu. Hover durumları da bu yüzden
+   ayrıca tanımlanıyor. */
+.calendar-nav-toggle.is-active {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
+}
+
+.calendar-nav-toggle.is-active:hover {
+  background: #1d4ed8;
+}
+
+.theme-light .calendar-nav-toggle.is-active,
+.theme-light .calendar-nav-toggle.is-active:hover {
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  border-color: #4f46e5;
+  color: #ffffff;
+}
+
+.theme-light .calendar-checkbox-toggle-box {
+  border-color: rgba(100, 116, 139, 0.6);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+/* İşaretli kutu açık temada da dolu kalır — header'ın diğer aktif
+   göstergeleriyle (.calendar-nav-toggle.is-active) aynı indigo. Onay işareti
+   beyaz olduğu için kutunun dolgusu koyu olmak ZORUNDA. */
+.theme-light .calendar-checkbox-toggle-input:checked ~ .calendar-checkbox-toggle-box {
+  background: #4f46e5;
+  border-color: #4f46e5;
+}
+
+
+.theme-light .calendar-splitter {
+  background: linear-gradient(180deg, #dbeafe 0%, #e2e8f0 100%);
+  border-left-color: rgba(148, 163, 184, 0.5);
+  border-right-color: rgba(148, 163, 184, 0.5);
+}
+
+.theme-light .calendar-splitter:hover,
+.theme-light .calendar-splitter.is-dragging {
+  background: linear-gradient(180deg, #bfdbfe 0%, #cbd5e1 100%);
+}
+
+.theme-light .calendar-sidebar-title,
+.theme-light .calendar-nav h3,
+.theme-light .calendar-header-title,
+.theme-light .yearly-header h3 {
+  color: #0f172a;
+}
+
+.theme-light .calendar-active-list--sidebar {
+  border-top-color: rgba(148, 163, 184, 0.45);
+}
+
+
+.theme-light .calendar-active-empty {
+  color: #64748b;
+}
+
+.theme-light .active-orders-table {
+  color: #1e293b;
+}
+
+.theme-light .active-orders-table thead tr,
+.theme-light .active-orders-table th {
+  background: #f1f5f9;
+  border-bottom-color: #e2e8f0;
+  color: #64748b;
+}
+
+.theme-light .active-orders-row {
+  border-bottom-color: #e9edf3;
+}
+
+.theme-light .active-orders-row:hover {
+  background: #e8f0fe;
+}
+
+.theme-light .active-orders-td--orderno {
+  color: #1d4ed8;
+}
+
+.theme-light .active-orders-td--product {
+  color: #0f172a;
+}
+
+.theme-light .active-orders-td--customer {
+  color: #334155;
+}
+
+.theme-light .active-orders-td--qty {
+  color: #15803d;
+}
+
+.theme-light .active-orders-td--date {
+  color: #64748b;
+}
+
+.theme-light .active-orders-row--child {
+  background: rgba(79, 70, 229, 0.05);
+  border-left-color: transparent;
+}
+
+.theme-light .active-orders-row--child:hover {
+  background: rgba(79, 70, 229, 0.1);
+  border-left-color: #4f46e5;
+}
+
+.theme-light .active-orders-row--child .active-orders-td--orderno {
+  color: #4338ca;
+}
+
+.theme-light .active-orders-row--child .active-orders-td--orderno::before {
+  border-left-color: rgba(79, 70, 229, 0.4);
+  border-bottom-color: rgba(79, 70, 229, 0.4);
+  background: transparent;
+}
+
+.theme-light .active-orders-row--child .active-orders-td--orderno::after {
+  background-color: rgba(79, 70, 229, 0.1);
+  color: #4338ca;
+  border-color: rgba(79, 70, 229, 0.2);
+}
+
+.theme-light .active-orders-row--groupchild {
+  background: rgba(2, 132, 199, 0.05);
+  border-left-color: transparent;
+}
+
+.theme-light .active-orders-row--groupchild:hover {
+  background: rgba(2, 132, 199, 0.1);
+  border-left-color: #0284c7;
+}
+
+.theme-light .active-orders-row--groupchild .active-orders-td--orderno {
+  color: #0369a1;
+}
+
+.theme-light .active-orders-row--groupchild .active-orders-td--orderno::before {
+  border-left-color: rgba(2, 132, 199, 0.4);
+  border-bottom-color: rgba(2, 132, 199, 0.4);
+  background: transparent;
+}
+
+.theme-light .active-orders-row--groupchild .active-orders-td--orderno::after {
+  background-color: rgba(2, 132, 199, 0.1);
+  color: #0369a1;
+  border-color: rgba(2, 132, 199, 0.2);
+}
+
+.theme-light .active-orders-groupcount-badge {
+  background-color: rgba(2, 132, 199, 0.1);
+  color: #0369a1;
+  border-color: rgba(2, 132, 199, 0.2);
+}
+
+.theme-light .active-orders-top-scrollbar::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.theme-light .active-orders-top-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+}
+
+.theme-light .active-orders-top-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+
+.theme-light .calendar-shell,
+.theme-light .yearly-shell,
+.theme-light .delivery-calendar-shell {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.theme-light .calendar-main,
+.theme-light .calendar-sidebar,
+.theme-light .calendar-nav,
+.theme-light .calendar-header,
+.theme-light .yearly-header,
+.theme-light .delivery-calendar-nav,
+.theme-light .delivery-calendar-yearly-header {
+  background: #f8fafc;
+  color: #0f172a;
+  border-color: rgba(148, 163, 184, 0.5);
+}
+
+.theme-light .calendar-grid,
+.theme-light .yearly-planner-grid,
+.theme-light .yearly-planner-month-row,
+.theme-light .yearly-planner-cell,
+.theme-light .yearly-planner-head-days,
+.theme-light .yearly-planner-head-label {
+  background: #ffffff;
+  color: #0f172a;
+  border-color: rgba(148, 163, 184, 0.5);
+}
+
+.theme-light .calendar-day {
+  background: #ffffff;
+  border-color: rgba(148, 163, 184, 0.42);
+}
+
+.theme-light .calendar-day.is-out {
+  background: #f8fafc;
+}
+
+.theme-light .calendar-day.is-offday {
+  background: repeating-linear-gradient(-45deg,
+      #eef2ff,
+      #eef2ff 8px,
+      #e2e8f0 8px,
+      #e2e8f0 16px);
+}
+
+.theme-light .calendar-day.is-today,
+.theme-light .yearly-planner-cell.is-today {
+  box-shadow: inset 0 0 0 1px rgba(79, 70, 229, 0.55);
+}
+
+.theme-light .calendar-day-number,
+.theme-light .yearly-planner-cell-day,
+.theme-light .yearly-planner-cell-weekday,
+.theme-light .calendar-weekday,
+.theme-light .yearly-planner-head-day,
+.theme-light .yearly-planner-month-label {
+  color: #0f172a;
+}
+
+
+.theme-light .calendar-outsourced-toggle {
+  border-color: rgba(148, 163, 184, 0.6);
+  background: #f8fafc;
+}
+
+.theme-light .calendar-outsourced-toggle strong {
+  color: #0f172a;
+}
+
+.theme-light .calendar-outsourced-toggle small {
+  color: #64748b;
+}
+
+.theme-light .detail-error {
+  border-color: rgba(220, 38, 38, 0.35);
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+
+.theme-light .yearly-planner-head-label,
+.theme-light .yearly-planner-head-days,
+.theme-light .yearly-planner-month-label {
+  background: #f1f5f9;
+}
+
+.theme-light .yearly-planner-head-day,
+.theme-light .yearly-planner-head-label,
+.theme-light .yearly-planner-month-label,
+.theme-light .yearly-planner-cell-day,
+.theme-light .yearly-planner-cell-weekday {
+  color: #334155;
+}
+
+.theme-light .yearly-planner-cell.is-empty {
+  background: rgba(148, 163, 184, 0.14);
+}
+
+.theme-light .yearly-planner-cell.is-holiday {
+  box-shadow: inset 0 0 0 1px rgba(217, 119, 6, 0.55);
+}
+
+.theme-light .delivery-calendar-yearly-weekend::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--weekend-tint);
+  opacity: 1;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.theme-light .delivery-calendar-yearly-weekend>span,
+.theme-light .delivery-calendar-yearly-weekend>.yearly-planner-cell-events {
+  position: relative;
+  z-index: 1;
+}
+
+.theme-light .yearly-planner-cell.is-today {
+  box-shadow: inset 0 0 0 2px #4f46e5 !important;
+}
+
+
+.theme-light .delivery-calendar-shell {
+  background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+}
+
+.theme-light .delivery-calendar-nav,
+.theme-light .delivery-calendar-yearly-header {
+  background: #f8fafc;
+}
+
+.theme-light .delivery-calendar-chip,
+.theme-light .delivery-calendar-yearly-chip {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+}
+
+.theme-light .is-group-highlighted-main {
+  outline: 2px solid #0284c7;
+  box-shadow: 0 0 10px 2px rgba(2, 132, 199, 0.55);
+}
+
+.theme-light .is-group-highlighted-component {
+  outline: 2px solid #b45309;
+  box-shadow: 0 0 10px 2px rgba(180, 83, 9, 0.55);
+}
+
+
+.theme-light ::-webkit-scrollbar-track {
+  background: #e2e8f0;
+}
+
+.theme-light ::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+}
+
+.theme-light ::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+
+/* 5‑column variant for split head / row (Adet | Başlangıç | İş Günü | Bitiş | Sil) */
+
+
+/* Date-range warning banners */
+
+
+@keyframes calWarnFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1100px) {
+  .calendar-shell {
+    grid-template-columns: 1fr;
+  }
+
+  /* .calendar-sidebar--overlay hariç: dar ekranda kullanıcı "Aktif Siparişleri
+     Göster" ile paneli açtığında bu, grid sütunu değil kapatılabilir bir
+     çekmeve (overlay) olarak render edilir (bkz. DeliveryCalendarPage.tsx
+     renderActiveOrdersSidebar) — bu genel kural onu da gizlemesin diye hariç
+     tutulur. */
+  .calendar-sidebar:not(.calendar-sidebar--overlay) {
+    display: none;
+  }
+
+  .calendar-nav h3 {
+    font-size: 20px;
+  }
+
+  .calendar-nav {
+    grid-template-columns: 1fr;
+    height: auto;
+    min-height: 60px;
+    padding: 10px 12px;
+  }
+
+  .calendar-nav-left,
+  .calendar-nav-center,
+  .calendar-nav-right {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+
+/* Yearly horizontal timeline view */
+.yearly-shell {
+  height: 100%;
+  background: #0f1117;
+  color: #e5e7eb;
+  display: flex;
+  flex-direction: column;
+}
+
+.yearly-header {
+  height: 64px;
+  flex-shrink: 0;
+  border-bottom: 1px solid #242734;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+}
+
+.yearly-header h3 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 500;
+  color: #f9fafb;
+}
+
+.yearly-header-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.yearly-planner-grid {
+  --planner-cols: 31;
+  --planner-day-size: minmax(24px, 1fr);
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  align-content: start;
+  padding-bottom: 56px;
+  scroll-padding-bottom: 56px;
+  display: grid;
+  grid-template-columns: 66px minmax(940px, 1fr);
+  grid-auto-rows: auto;
+  border-top: 1px solid #242734;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 120px),
+    #0f1117;
+}
+
+.yearly-planner-head-label {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 9;
+  border-right: 1px solid #242734;
+  border-bottom: 1px solid #242734;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  background: #10141f;
+}
+
+.yearly-planner-head-days {
+  position: sticky;
+  top: 0;
+  z-index: 8;
+  display: grid;
+  grid-template-columns: var(--yearly-day-columns, repeat(var(--planner-cols), var(--planner-day-size)));
+  border-bottom: 1px solid #242734;
+  background: #10141f;
+}
+
+.yearly-planner-head-day {
+  border-right: 1px solid #232837;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 600;
+  color: #7f8aa3;
+}
+
+
+.yearly-planner-month-label {
+  position: sticky;
+  left: 0;
+  z-index: 7;
+  border-right: 1px solid #242734;
+  border-bottom: 1px solid #222734;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #8bb1ff;
+  background: #10141f;
+  padding: 0 4px;
+}
+
+
+.yearly-planner-month-row {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  display: grid;
+  grid-template-columns: var(--yearly-day-columns, repeat(var(--planner-cols), var(--planner-day-size)));
+  grid-auto-rows: max-content;
+  border-bottom: 1px solid #222734;
+  min-height: max-content;
+}
+
+.yearly-planner-cell {
+  position: relative;
+  border-right: 1px solid #1f2432;
+  border-bottom: 1px solid #1f2432;
+  min-height: 0;
+  /* height is driven by inline style from laneCount */
+  background: rgba(255, 255, 255, 0.01);
+  overflow: visible;
+  padding: 2px 0 3px;
+  display: flex;
+  flex-direction: column;
+}
+
+.yearly-planner-cell-day {
+  display: block;
+  padding-top: 2px;
+  padding-left: 4px;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+  color: #a5b0c3;
+}
+
+.yearly-planner-cell-weekday {
+  display: block;
+  margin-top: 2px;
+  padding-left: 4px;
+  font-size: 7px;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  color: #7f8aa3;
+}
+
+.yearly-planner-cell.is-empty {
+  background: rgba(148, 163, 184, 0.08);
+}
+
+.yearly-planner-cell.is-weekend {
+  box-shadow: inset 0 0 0 999px rgba(255, 255, 255, 0.02);
+}
+
+.yearly-planner-cell.is-holiday {
+  box-shadow: inset 0 0 0 1px rgba(250, 204, 21, 0.45);
+}
+
+.yearly-planner-cell.is-today {
+  box-shadow: inset 0 0 0 2px #ef4444 !important;
+}
+
+
+.yearly-planner-cell-events {
+  position: relative;
+  overflow: visible;
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.yearly-planner-event-placeholder {
+  height: 16px;
+  margin-left: -6px;
+  margin-right: -6px;
+  flex-shrink: 0;
+  display: block;
+}
+
+
+@media (max-width: 980px) {
+  .yearly-planner-grid {
+    /* DİKKAT: her ay JSX'te tam olarak 2 grid öğesi üretir (ay etiketi +
+       gün satırı, bkz. DeliveryCalendarPage.tsx yearlyMonthLayouts.map).
+       Burada üçüncü bir sütun (eskiden kaldırılmış bir "notlar" sütunundan
+       kalma, bkz. artık hiç kullanılmayan .yearly-planner-head-notes/
+       .yearly-planner-notes-cell) tanımlanırsa, CSS Grid'in otomatik
+       yerleşimi 2'li öğe dizisini 3 sütuna göre kaydırıp ayları yanlış
+       sütunlara dağıtır — dar ekranda sadece birkaç ayın "doğru" göründüğü,
+       geri kalanının karışıp kaybolduğu hataya yol açar. Sütun sayısı HER
+       ZAMAN temel kuralla (2299. satır) aynı kalmalı.
+    */
+    grid-template-columns: 54px minmax(880px, 1fr);
+    grid-auto-rows: auto;
+  }
+
+  .yearly-planner-month-label {
+    font-size: 16px;
+    letter-spacing: 0.04em;
+  }
+
+  .yearly-planner-cell {
+    min-height: 0;
+  }
+
+  .yearly-planner-cell-day {
+    padding-left: 3px;
+    font-size: 8px;
+  }
+
+  .yearly-planner-cell-weekday {
+    padding-left: 3px;
+    font-size: 6px;
+  }
+
+  .yearly-planner-cell-chip {
+    min-height: 12px;
+    font-size: 8px;
+  }
+
+  .yearly-planner-cell-events {
+    margin-top: 5px;
+    gap: 1px;
+  }
+
+  .yearly-planner-event-placeholder {
+    min-height: 12px;
+  }
+}
+
+
+@keyframes detail-dropdown-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* DİKKAT: `fixed` — `absolute` DEĞİL. Menü, yatay kaydırılabilir header'ın
+   (bkz. ".calendar-header { overflow-x: auto }") içinde duruyor; absolute
+   olsaydı header'ın 60px'lik kutusunda kırpılır, z-index ne olursa olsun
+   "arkada kalmış" gibi görünürdü. Overflow kırpması fixed öğeleri etkilemez.
+   top/left, tetikleyici düğmenin ölçülen konumundan inline gelir
+   (bkz. DeliveryCalendarPage openDetailDropdown). */
+.detail-mode-dropdown {
+  position: fixed;
+  min-width: 176px;
+  background: #1e293b;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 10px;
+  padding: 6px;
+  z-index: 60;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55), 0 2px 8px rgba(0, 0, 0, 0.3);
+  animation: detail-dropdown-in 160ms ease-out;
+  transform-origin: top left;
+}
+
+.detail-mode-dropdown::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: 16px;
+  width: 10px;
+  height: 10px;
+  background: #1e293b;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-right: none;
+  border-bottom: none;
+  transform: rotate(45deg);
+  clip-path: polygon(0 0, 100% 100%, 0 100%);
+}
+
+.detail-mode-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+  padding: 8px 12px 8px 10px;
+  font-size: 0.75rem;
+  color: #e2e8f0;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 120ms ease, padding-left 120ms ease;
+}
+
+.detail-mode-dropdown-item:hover {
+  background: rgba(59, 130, 246, 0.16);
+  padding-left: 14px;
+}
+
+.detail-mode-dropdown-item.selected {
+  background: rgba(59, 130, 246, 0.22);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.detail-mode-dropdown-item.selected::before {
+  content: '✓';
+  font-size: 0.65rem;
+  color: #60a5fa;
+  flex-shrink: 0;
+}
+
+.detail-mode-dropdown-item:not(.selected)::before {
+  content: '';
+  width: 0.65rem;
+  flex-shrink: 0;
+}
+
+.theme-light .detail-mode-dropdown {
+  background: #ffffff;
+  border-color: rgba(148, 163, 184, 0.35);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.theme-light .detail-mode-dropdown::before {
+  background: #ffffff;
+  border-color: rgba(148, 163, 184, 0.35);
+}
+
+.theme-light .detail-mode-dropdown-item {
+  color: #1e293b;
+}
+
+.theme-light .detail-mode-dropdown-item:hover {
+  background: rgba(59, 130, 246, 0.10);
+}
+
+/* Hiyerarşik Gantt — yıllık ızgarada çalışılmayan gün (hafta sonu/tatil) hücreleri.
+   Koyu temada hafif kırmızı ton. Açık temada ise mevcut tatil renk diliyle
+   (calendar-day.is-offday, yearly-planner-cell.is-holiday) tutarlı kalması için
+   amber korunuyor. */
+/* Gantt panellerinin kaydırma çubukları. Eskiden her panelde ayrı ayrı, satır
+   içi Tailwind ile 10px olarak tanımlıydı — tıklaması zordu ve beş yerde
+   tekrarlanıyordu. Tek yerden yönetmek ve tıklama hedefini büyütmek için ortak
+   sınıfa alındı: hem dikey (width) hem yatay (height) çubuk aynı kalınlıkta.
+   Thumb'a saydam kenarlık + background-clip verilerek tıklama alanı geniş,
+   görünen tutamaç ise dengeli tutuluyor. */
+.gantt-scroll {
+  scrollbar-width: auto;                /* Firefox */
+  scrollbar-color: #64748b transparent; /* Firefox: thumb / track */
+}
+.gantt-scroll::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+.gantt-scroll::-webkit-scrollbar-track {
+  background: rgba(30, 41, 59, 0.3);
+}
+.gantt-scroll::-webkit-scrollbar-thumb {
+  background-color: #64748b;
+  border-radius: 9999px;
+  border: 4px solid transparent;
+  background-clip: content-box;
+}
+.gantt-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: #94a3b8;
+  background-clip: content-box;
+}
+.gantt-scroll::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+.theme-light .gantt-scroll {
+  scrollbar-color: #94a3b8 transparent;
+}
+.theme-light .gantt-scroll::-webkit-scrollbar-track {
+  background: rgba(148, 163, 184, 0.18);
+}
+.theme-light .gantt-scroll::-webkit-scrollbar-thumb {
+  background-color: #94a3b8;
+}
+.theme-light .gantt-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: #64748b;
+}
+
+.gantt-holiday-cell {
+  background: rgba(248, 113, 113, 0.14);
+}
+
+.theme-light .gantt-holiday-cell {
+  background: rgba(217, 119, 6, 0.16);
+}
+
+/* Hiyerarşik Gantt — ayın olmayan günleri (ör. Şubat 30) için hücre. Koyu temada
+   eski hâli (çok koyu lacivert üstüne %30 opaklık) neredeyse zeminle aynı tondaydı,
+   fark edilmiyordu — bunun yerine belirgin bir gri ton kullanılıyor. Açık temada
+   zaten yeterince belirgindi, o görünüm korunuyor. */
+.gantt-outmonth-cell {
+  background: rgba(148, 163, 184, 0.14);
+}
+
+.theme-light .gantt-outmonth-cell {
+  background: rgba(15, 23, 42, 0.3);
+}
+
+/* Hiyerarşik Gantt — alt ürün (BOM bileşeni) satır etiketi. Koyu temada zeminle
+   iyi kontrast veren açık amber; açık temada AYNI ton (amber-200) beyaz zemine
+   neredeyse görünmez kaldığı için koyu bir amber'e (amber-800) çevriliyor. */
+.gantt-component-label-text {
+  color: rgba(253, 230, 138, 0.8);
+}
+
+.theme-light .gantt-component-label-text {
+  color: #92400e;
+}
+
+/* Hiyerarşik Gantt — kapatılmış (collapse edilmiş) sipariş/parça/alt ürün
+   satırındaki ÖZET bar: altındaki tüm adımların toplam aralığını tek barla
+   gösterir. Rengi kasıtlı olarak NÖTR (slate) — aşama renklerinden biri
+   kullanılsaydı (ör. Tedarik mavisi) kullanıcı onu tek bir aşama sanardı;
+   kesikli kenarlık da "bu gerçek bir adım değil, özet" sinyali verir.
+
+   Renkler inline style ile DEĞİL, bu sınıfla verilir: inline stiller
+   .theme-light kuralıyla ezilemez, dolayısıyla açık temada koyu temanın
+   yarı saydam açık gri tonu beyaz zeminde neredeyse görünmez kalırdı
+   (.gantt-component-label-text ile birebir aynı sorun ve aynı çözüm).
+   Açık temada zemin beyaz olduğu için opaklık artırılıp yazı koyulaştırılır. */
+.gantt-summary-bar {
+  background-color: rgba(148, 163, 184, 0.32);
+  border-color: rgba(148, 163, 184, 0.55);
+  color: #e2e8f0;
+}
+
+.theme-light .gantt-summary-bar {
+  background-color: rgba(100, 116, 139, 0.22);
+  border-color: rgba(71, 85, 105, 0.65);
+  color: #1e293b;
+}
+
+/* Hiyerarşik Gantt'ın YATAY görünümü (HierarchicalGantt, orientation="horizontal")
+   — her gün tam yükseklikte
+   renklendirilir: iş günü, koyu temada üst çubuğun (header, bg-surface-900/80
+   = #0f172a %80) rengiyle AYNI — sırıtan ayrı bir renk yerine görünümün
+   geri kalanıyla tutarlı kalsın diye. İş günü olmayan (hafta sonu + resmi
+   tatil, ayrı bir renge gerek yok) gri, bugün kırmızı. Açık temada iş günü
+   rengi hâlâ uygulamanın normal mavisi (#2563eb, soluk) — açık temada header
+   zaten çok açık bir ton olduğu için onunla eşitlemek ayrımı yok ederdi. */
+.htv-day-workday {
+  background: rgba(15, 23, 42, 0.8);
+}
+
+.theme-light .htv-day-workday {
+  background: rgba(37, 99, 235, 0.07);
+}
+
+.htv-day-offday {
+  background: rgba(148, 163, 184, 0.16);
+}
+
+.theme-light .htv-day-offday {
+  background: rgba(100, 116, 139, 0.18);
+}
+
+.htv-day-today {
+  background: rgba(239, 68, 68, 0.28);
+}
+
+.theme-light .htv-day-today {
+  background: rgba(239, 68, 68, 0.20);
+}
+
+/* Günleri ayıran ince dikey çizgi. Gün sütununun SOL kenarı olduğu için
+   sütunla birlikte sayfanın en altına kadar iner. Sadece Aylık yakınlaştırmada
+   uygulanır (bkz. showDayDividers) — Yıllık'ta çizgiler bitişip tarama dokusu
+   olurdu. Koyu temada açık, açık temada koyu bir gri; her ikisi de zeminden
+   ancak fark edilecek kadar düşük opaklıkta, "çok ince" istendiği gibi. */
+.htv-day-divider {
+  border-left: 1px solid rgba(148, 163, 184, 0.16);
+}
+
+.theme-light .htv-day-divider {
+  border-left-color: rgba(71, 85, 105, 0.16);
+}
+
+.theme-light .detail-mode-dropdown-item.selected {
+  background: rgba(59, 130, 246, 0.14);
+  color: #1e40af;
+}

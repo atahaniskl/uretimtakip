@@ -1,0 +1,39 @@
+# FastAPI & Server
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+python-multipart==0.0.12
+
+# Database
+sqlalchemy[asyncio]>=2.0.49
+asyncpg>=0.29.0
+alembic==1.13.3
+
+# Redis
+redis[hiredis]==5.1.1
+
+# Auth & Security
+passlib[bcrypt]==1.7.4
+python-jose[cryptography]==3.3.0
+bcrypt==4.2.0
+
+# MinIO
+minio==7.2.9
+
+# Data Processing
+pandas>=3.0.0
+openpyxl==3.1.5
+
+# Celery
+celery==5.4.0
+flower==2.0.1
+
+# Validation & Settings
+pydantic>=2.9.2
+pydantic-settings>=2.5.2
+
+# Utilities
+python-dotenv==1.0.1
+httpx==0.27.2
+
+# Islamic calendar (Hijri <-> Gregorian conversion, Umm al-Qura)
+hijridate==2.6.0

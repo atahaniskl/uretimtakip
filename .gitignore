@@ -1,0 +1,36 @@
+# Environment — NEVER commit real secrets
+.env
+.env.local
+.env.*.local
+
+# Generated at deploy time
+nginx/nginx.active.conf
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+build/
+.venv/
+venv/
+.pytest_cache/
+
+# Node
+node_modules/
+npm-debug.log*
+frontend/dist/
+frontend/tsconfig.tsbuildinfo
+
+# Docker volumes
+docker-data/
+
+# IDE
+.idea/
+*.swp
+*.swo
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
